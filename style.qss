@@ -1,0 +1,74 @@
+QWidget {
+    Background-color: #F3F4F6;
+}
+
+QLabel {
+    color: #454322;
+    font-size: 20px;
+    font-weight: lighter;
+    margin: 10px;
+    padding-right: 0;
+    font-family: 'Franklin Gothic Medium', 
+    'Arial Narrow', Arial, sans-serif;
+}
+
+QPushButton {
+    height: 50px;
+    border-radius: 10px;
+    border-color: gold;
+    background-color: #1E3A8A ;
+    color: whitesmoke;
+    font-size: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+QPushButton:hover {
+    background-color: #4F46E5;
+    color: #afabf5;
+}
+
+QPushButton:pressed {
+    background-color: #4F46E5;
+    color: gold;
+}
+
+QComboBox {
+    width: 300px;
+    max-width: 200px;
+    background-color: #FFFFFF;
+    color: #3b3b38;
+    font-size: 20px;
+    border-radius: 5px;
+    height: 30px;
+    padding-left: 20px;
+    border-width: 1.5px;
+    border-style: solid; 
+}
+
+QComboBox::down-arrow {
+    image: url(arrow-down_17190414.png);
+    width: 30px;
+    height: 15px;
+}
+
+#title {
+    font-size: 100px;
+    color: gold;
+    text-shadow: #4680b3;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+#description {
+    font-size: 29px;
+    color: rgb(59, 159, 247);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#QFrame {
+    color: white; 
+    height: 2px;
+}

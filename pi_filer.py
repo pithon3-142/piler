@@ -7,62 +7,118 @@ import shutil
 
 #import GUI library components
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
+    QLabel, QFileDialog, QComboBox, QMessageBox, QFrame
 )
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 
 class Filer(QWidget):
     #define constructor method of the class
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.stylesheet()
+
+    def stylesheet(self):
+        qss_file = "style.qss"
+        if os.path.exists(qss_file):
+            with open(qss_file, "r") as f:
+                self.setStyleSheet(f.read())
+        else:
+            print("qss file not found")
 
     #define and setup the layout
     def initUI(self):
         layout = QVBoxLayout()
 
-        #label for the source dir 
-        self.src_label = QLabel("Source Directory : Not Selected", self)
-        layout.addWidget(self.src_label)
+        self.title = QLabel("piler")
+        self.title.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.title)
+        self.title.setObjectName("title")
+
+        self.description = QLabel("Organize any type of your files😉.\nIt's easy, quick and seamless.")
+        self.description.setObjectName("description")
+        self.description.setAlignment(Qt.AlignCenter)
+        self.description.setWordWrap(True)
+        layout.addWidget(self.description)
+
+        #function to create line separators for sections
+        def separator():
+            line = QFrame()
+            line.setFrameShape(QFrame.HLine)
+            line.setStyleSheet("color: #D1D5DB ; background-color: #D1D5DB ; height: 3px;")
+            layout.addWidget(line)
+            return line
+
+        separator()
+
     
         #button to select the source directory
         self.src_btn = QPushButton("Select Source", self)
         self.src_btn.clicked.connect(self.select_src_dir)
-        layout.addWidget(self.src_btn)
+        self.src_btn.setFixedWidth(300)
+        layout.addWidget(self.src_btn, alignment=Qt.AlignCenter)
 
-        #select category label
+        #label for the source dir 
+        self.src_label = QLabel("Source Directory : Not Selected", self)
+        layout.addWidget(self.src_label, alignment=Qt.AlignCenter)
+
+        separator()
+
+        #category label and dropdown
+        self.category_layout = QHBoxLayout()
+        self.category_layout.setObjectName("cl")
+
         self.category = QLabel("Select File Category", self)
-        layout.addWidget(self.category)
 
-        #category dropdown
         self.category_menu = QComboBox(self)
         self.category_menu.addItems(["Text", "Image", "Audio", "Video", "Archive"])
         self.category_menu.currentTextChanged.connect(self.update_file_types)  # Connect signal to method
-        layout.addWidget(self.category_menu)
+
+        #add to main layout
+        self.category_layout.addWidget(self.category_menu)
+        self.category_layout.addWidget(self.category)
+        self.category_layout.setAlignment(Qt.AlignCenter)
+        layout.addLayout(self.category_layout)
 
         #file type label & dropdown
-        self.file_type_label = QLabel("Select File Type(s)", self)
-        layout.addWidget(self.file_type_label)  
+        self.file_type_layout = QHBoxLayout()
+
+        self.file_type_label = QLabel("Select File Type(s)...", self)
         self.file_type_menu = QComboBox(self)
-        layout.addWidget(self.file_type_menu)
+        self.file_type_layout.setAlignment(Qt.AlignCenter)
+
+        self.file_type_layout.addWidget(self.file_type_menu)
+        self.file_type_layout.addWidget(self.file_type_label)
+        layout.addLayout(self.file_type_layout)
+
+        separator()
+
+        #target dir button
+        self.tgt_btn = QPushButton("Select Target", self)
+        self.tgt_btn.clicked.connect(self.select_tgt_dir)
+        self.tgt_btn.setFixedWidth(300)
+        layout.addWidget(self.tgt_btn, alignment=Qt.AlignCenter)
 
         #target directory
         self.tgt_label = QLabel("Target Directory : Not Selected", self)
-        layout.addWidget(self.tgt_label)
+        layout.addWidget(self.tgt_label, alignment=Qt.AlignCenter)
 
-        self.tgt_btn = QPushButton("Select Target", self)
-        self.tgt_btn.clicked.connect(self.select_tgt_dir)
-        layout.addWidget(self.tgt_btn)
+        separator()
 
         #organize button
         self.org_btn = QPushButton("Organize", self)
-        self.org_btn.clicked.connect(self.organize_files)  # Corrected connection
-        layout.addWidget(self.org_btn)
+        self.org_btn.clicked.connect(self.organize_files)
+        self.org_btn.setFixedWidth(300)
+        layout.addWidget(self.org_btn, alignment=Qt.AlignCenter)
 
         #layout
         self.setLayout(layout)
+        self.setWindowIcon(QIcon('Pi.jpg'))
         self.setWindowTitle("Pi-Filer : Ultimate File Organizer")
-        self.setGeometry(500, 200, 800, 800)
-
+        self.setGeometry(500, 100, 800, 800)
+        self.setWindowOpacity(0.97)
         self.update_file_types()
 
     #function for the selection of the source directory
